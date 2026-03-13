@@ -25,7 +25,7 @@ apiKey = os.getenv("GOOGLE_API_KEY")
 chunk = 2048
 client = genai.Client()
 tools = [createFolder, googleSearch,deleteFromMemory, folderTree,readMemory, updateMemory,youtubeDownloader,
-         createFile, launchCommand, getSystemInfo, readFile, getCurrentWorkingDirectory, getFolderContent, findFolderOrFile]
+         createFile, launchCommands, getSystemInfo, readFile, getCurrentWorkingDirectory, getFolderContent, findFolderOrFile]
 
 async def call():
     with ignoreErrors():

@@ -34,7 +34,10 @@ config = types.GenerateContentConfig(
 chat = client.chats.create(model = "gemini-3.1-flash-lite-preview", config=config)
 
 async def answer(prompt: str):
-    response = chat.send_message([prompt])
-    return response
+    try:
+        response = chat.send_message([prompt])
+        return response
+    except Exception as e:
+        return e
 
 

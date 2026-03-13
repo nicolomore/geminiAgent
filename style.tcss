@@ -5,10 +5,10 @@
   width: 1fr;
 }
 #inputBar {
-  height: 5;
+  height: 3;
   dock: bottom;
   background: #1e1f29;
-  border: round #3b82f6;
+  /*border: round #3b82f6;*/
 }
 #allega {
   width: auto;

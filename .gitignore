@@ -1,29 +1,4 @@
-<<<<<<< HEAD
-# File sensibili (NON CARICARE)
-*.env
-*.json
-*.key
-*.pem
-
-# Cartelle Python/IDE
-__pycache__/
-.idea/
-.vscode/
-.DS_Store
-=======
-# Firebase/Google Cloud config (quello della foto!)
-lib/firebase_options.dart
-
-# Credenziali e segreti
 .env
-*.secret
-credentials.json
-
-# Cartelle di build e dipendenze
-.dart_tool/
-build/
-.packages
->>>>>>> 3e6f0ca (Initial commit - clean history)
 token.json
 credentials.json
 __pycache__/
