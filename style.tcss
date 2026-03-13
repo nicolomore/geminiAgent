@@ -1,0 +1,59 @@
+#chat {
+  scrollbar-size: 0 0;
+  background: #1e1f29;
+  border: round #3b82f6;
+  width: 1fr;
+}
+#inputBar {
+  height: 5;
+  dock: bottom;
+  background: #1e1f29;
+  border: round #3b82f6;
+}
+#allega {
+  width: auto;
+  background: #1e1f29;
+}
+Button.-active {
+  border: round #3b82f6;
+  background: #3b82f6;
+  tint: white 0%;
+}
+Button {
+  border: round #3b82f6;
+}
+#input {
+  width: 1fr;
+  background: #1e1f29;
+  border: round #3b82f6;
+}
+#input:focus {
+  width: 1fr;
+  background: #1e1f29;
+  border: round #3b82f6;
+  background-tint: transparent;
+}
+#invia {
+  width: auto;
+  background: #1e1f29;
+}
+Bubble.user {
+  height: auto;
+  align-horizontal: right;
+}
+Bubble.ai {
+  height: auto;
+  align-horizontal: left;
+}
+.contenuto {
+  height: auto;
+  width: auto;
+  max-width: 75%;
+  padding: 0 1;
+}
+Bubble.user .contenuto {
+  border: round #3b82f6;
+}
+Bubble.ai .contenuto {
+  border: round #10b981;
+}
