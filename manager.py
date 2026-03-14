@@ -11,9 +11,9 @@ def tool(function):
     @wraps(function)
     def toolCall(*args, **kwargs):
         try:
-            if  instance:
-                instance.call_from_thread(instance.onToolCall, function.__name__)
             output = function(*args, **kwargs)
+            if  instance:
+                instance.call_from_thread(instance.onToolCall, function.__name__, args, kwargs, output)
             return output
         except Exception as e:
             return str(e)

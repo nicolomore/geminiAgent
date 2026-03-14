@@ -1,5 +1,5 @@
 from textual.app import App, ComposeResult
-from textual.widgets import RichLog, Input, Button, Static
+from textual.widgets import RichLog, Input, Button, Static, Collapsible, Label
 from textual.containers import Horizontal, VerticalScroll
 from textual import on, work
 from answer import *
@@ -45,9 +45,9 @@ class GUI(App):
             pannelloGem = Bubble(text=Markdown(risposta.text), role="ai")
             self.call_from_thread(chat.mount, pannelloGem)
             self.call_from_thread(chat.scroll_end)
-    def onToolCall(self, tool : str):
+    def onToolCall(self, toolName : str, params : tuple, kparams : dict[str, any], output : str):
         chat = self.query_one("#chat", VerticalScroll)
-        chat.mount(Bubble(text=tool, role="ai"))
+        chat.mount(Collapsible(Label(f"ARGS: \n{", ".join(params)}"), Label(f"KWARGS: \n{kparams}"), Label(f"OUTPUT: \n{output}"), title=toolName))
         chat.scroll_end()
         
 
