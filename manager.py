@@ -5,21 +5,25 @@ from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 
+instance = None
+
 def tool(function):
     @wraps(function)
     def toolCall(*args, **kwargs):
         try:
+            if  instance:
+                instance.call_from_thread(instance.onToolCall, function.__name__)
             output = function(*args, **kwargs)
             return output
         except Exception as e:
-            return e
+            return str(e)
 
     return toolCall
+
 
 def initGmail():
     SCOPES = ['https://mail.google.com/']
     credenziali = None
-    current = os.getcwd()
     tokenPath = "/home/batman/progetti/agenteV2/token.json"
     if os.path.exists(tokenPath):
         credenziali = Credentials.from_authorized_user_file(tokenPath, SCOPES)
