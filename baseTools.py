@@ -1,18 +1,11 @@
-from google_auth_oauthlib.flow import InstalledAppFlow
-from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
-from rich.console import Group, Console
 from email.message import EmailMessage
 from readability import readability
 from serpapi import GoogleSearch
 from dotenv import load_dotenv
-from questionary import select
-from rich.style import Style
-from rich.panel import Panel
 from pathlib import Path
 from manager import *
-import google.auth
 import subprocess
 import py_compile
 import html2text
@@ -452,3 +445,8 @@ def sendMail(destinationAddress: str, object : str, content: str, attachmentPath
     codificato = base64.urlsafe_b64encode(messaggio.as_bytes()).decode()
     createMessage = {"raw": codificato}
     send = (service.users().messages().send(userId= "me", body = createMessage).execute())
+
+@tool
+async def testAsync():
+    """it tests the async tools"""
+    return """success"""

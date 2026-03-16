@@ -24,30 +24,30 @@ class Agent:
                     findFolderOrFile, siteContent, analyzePythonProject,
                     manageTask, readTask, replaceInFile,
                     testPythonCode, checkPythonSyntax, backupFile,
-                    restoreFile, sendMail]
+                    restoreFile, sendMail, testAsync]
         self.config = types.GenerateContentConfig(temperature=0.7, tools=self.tools)
         self.chat = None
         self.history = []
         self.systemPrompt = ""
 
     def start(self):
-        self.chat = self.client.chats.create(model = "gemini-3.1-flash-lite-preview", config=self.config, history=self.history)
+        self.chat = self.client.aio.chats.create(model = "gemini-3.1-flash-lite-preview", config=self.config, history=self.history)
 
     def setSystemPrompt(self, prompt: str):
         self.systemPrompt = prompt
         self.config = types.GenerateContentConfig(temperature=0.7, tools=self.tools, system_instruction= self.systemPrompt)
         if self.chat:
-            self.chat = self.client.chats.create(model = "gemini-3.1-flash-lite-preview", config=self.config, history=self.history)
+            self.chat = self.client.aio.chats.create(model = "gemini-3.1-flash-lite-preview", config=self.config, history=self.history)
     
     def addTools(self, tools: list):
         for tool in tools:
             self.tools.append(tool)
         self.config = types.GenerateContentConfig(temperature=0.7, tools=self.tools, system_instruction= self.systemPrompt)
         if self.chat:
-            self.chat = self.client.chats.create(model = "gemini-3.1-flash-lite-preview", config=self.config, history=self.history)
+            self.chat = self.client.aio.chats.create(model = "gemini-3.1-flash-lite-preview", config=self.config, history=self.history)
     async def answer(self, prompt: str):
         try:
-            response = self.chat.send_message([prompt])
+            response = await self.chat.send_message([prompt])
             self.history = self.chat.get_history()
             return response
         except Exception as e:

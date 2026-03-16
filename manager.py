@@ -1,24 +1,38 @@
-from functools import wraps
-import os.path
+from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
-from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
+from functools import wraps
+import inspect
+import os.path
 
 instance = None
 
 def tool(function):
-    @wraps(function)
-    def toolCall(*args, **kwargs):
-        try:
-            output = function(*args, **kwargs)
-            if  instance:
-                instance.call_from_thread(instance.onToolCall, function.__name__, args, kwargs, output)
-            return output
-        except Exception as e:
-            return str(e)
+    if inspect.iscoroutinefunction(function):
+        @wraps(function)
+        async def asyncToolCall(*args, **kwargs):
+            try:
+                output = await function(*args, **kwargs)
+                if  instance:
+                    instance.onToolCall( function.__name__, args, kwargs, output)
+                return output
+            except Exception as e:
+                return str(e)
 
-    return toolCall
+        return asyncToolCall
+    else:
+        @wraps(function)
+        def syncToolCall(*args, **kwargs):
+            try:
+                output = function(*args, **kwargs)
+                if  instance:
+                    instance.call_from_thread(instance.onToolCall, function.__name__, args, kwargs, output)
+                return output
+            except Exception as e:
+                return str(e)
+
+        return syncToolCall
 
 
 def initGmail():

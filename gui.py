@@ -1,9 +1,10 @@
-from textual.app import App, ComposeResult
-from textual.widgets import Input, Button, Static, Collapsible, Pretty
+from textual.widgets import Input, Button, Collapsible, Pretty, Markdown
 from textual.containers import Horizontal, VerticalScroll
+from plugins.telegramPlugin import telegramPlugin
+from textual.app import App, ComposeResult
 from textual import on, work
-from agent import *
 import manager
+import agent
 
 class Bubble(Horizontal):
     def __init__(self, text : str, role : str):
@@ -12,8 +13,9 @@ class Bubble(Horizontal):
         self.role = role
         self.add_class(role)
 
+    
     def compose(self) -> ComposeResult:
-        yield Static(content=self.text, classes="contenuto")
+        yield Markdown(markdown=self.text, classes="contenuto")
 
 class GUI(App):
     CSS_PATH = "/home/batman/progetti/agenteV2/style.tcss"
@@ -21,6 +23,11 @@ class GUI(App):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         manager.instance = self
+
+    def _on_mount(self, event):
+        self.query_one("#input", Input).focus()
+
+
     def compose(self) -> ComposeResult:
         yield VerticalScroll(id="chat")
         with Horizontal(id="inputBar"):
@@ -28,26 +35,32 @@ class GUI(App):
             yield Input(placeholder="prompt", id="input")
             yield Button(label=">", id="invia")
     
-    def setAgent(self, agent: Agent):
+    def setAgent(self, agent: agent.Agent):
         self.agent = agent
 
+   
+    @work(exclusive=True)
+    async def rispondi(self, prompt : str):
+        chat = self.query_one("#chat", VerticalScroll)
+        risposta = await self.agent.answer(prompt)
+        if(risposta.text):
+            pannelloGem = Bubble(text=risposta.text, role="ai")
+            chat.mount(pannelloGem)
+            chat.scroll_end()
+    
     @on(Button.Pressed, "#invia")
     @on(Input.Submitted, "#input")
-    @work(exclusive=True, thread=True)
-    async def rispondi(self):
+    async def printMessage(self):
         input = self.query_one("#input", Input)
         chat = self.query_one("#chat", VerticalScroll)
         prompt = input.value
         input.value = ""
         pannelloTu = Bubble(text=prompt, role="user")
-        self.call_from_thread(chat.mount, pannelloTu)
-        self.call_from_thread(chat.scroll_end)
-        self.call_from_thread(input.focus)
-        risposta = await self.agent.answer(prompt)
-        if(risposta.text):
-            pannelloGem = Bubble(text=Markdown(risposta.text), role="ai")
-            self.call_from_thread(chat.mount, pannelloGem)
-            self.call_from_thread(chat.scroll_end)
+        await chat.mount(pannelloTu)
+        chat.scroll_end()
+        input.focus()
+        self.rispondi(prompt)
+    
     def onToolCall(self, toolName : str, params : tuple, kparams : dict[str, any], output : str):
         chat = self.query_one("#chat", VerticalScroll)
         data = {
@@ -61,10 +74,19 @@ class GUI(App):
         
 
 if __name__ == "__main__":
-    initGmail()
-    agente = Agent()
+    manager.initGmail()
+    agente = agent.Agent()
+    agente.setSystemPrompt("""
+        Sei un assistente AI avanzato e un agente di sistema locale. Interagisci con l'utente tramite un'interfaccia a riga di comando (TUI) avanzata.
+
+        Hai a disposizione un vasto arsenale di strumenti per interagire con il sistema operativo (Linux), esplorare e modificare file, testare codice Python, inviare email, scaricare media, cercare sul web e gestire una memoria a lungo termine. Usa questi strumenti in modo proattivo e autonomo per completare le richieste dell'utente.
+
+        STILE E COMPORTAMENTO:
+        - Comportati come un sysadmin o un "copilota" per programmatori: sii conciso, tecnico, preciso e vai dritto al punto. Evita convenevoli inutili.
+        - Se l'utente ti chiede di fare qualcosa sul sistema (es. "creami questo file", "cerca questo errore", "aggiorna la task"), USA I TOOL prima di rispondere e poi conferma all'utente l'esito dell'operazione, mostrando eventuali output rilevanti.
+        """)
+    agente.addTools([telegramPlugin.sendFileTool])
     agente.start()
     app = GUI()
     app.setAgent(agente)
     app.run()
-    app.query_one("#input", Input).focus()

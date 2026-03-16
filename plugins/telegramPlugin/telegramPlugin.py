@@ -1,5 +1,3 @@
-import re
-
 from telegram import Update
 from telegram.ext import Application, CommandHandler, filters, ContextTypes, MessageHandler
 from pathlib import Path
@@ -8,7 +6,6 @@ sys.path.append(str(Path(__file__).parent.parent.parent))
 import agent
 from manager import *
 import asyncio
-import markdown
 
 token = ""
 chatID = ""
@@ -18,15 +15,12 @@ with open("/home/batman/progetti/agenteV2/plugins/telegramPlugin/telegramID.txt"
     chatID = int(file.read().strip())
 bot = Application.builder().token(token).build()
 
-async def sendFile(path : str):
+@tool
+async def sendFileTool(path: str):
+    """you can use this function for sending files to the user with telegram"""
     with open(path, "rb") as file:
-        print(path)
         await bot.bot.send_document(chat_id=chatID, document = file)
 
-@tool
-def sendFileTool(path: str):
-    """you can use this function for sending files to the user with telegram"""
-    asyncio.run_coroutine_threadsafe(sendFile(path), asyncio.get_event_loop())
     return """inviato con successo"""
 
     
