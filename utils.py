@@ -3,6 +3,7 @@ from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
 from functools import wraps
+from pathlib import Path
 import inspect
 import os.path
 
@@ -38,7 +39,7 @@ def tool(function):
 def initGmail():
     SCOPES = ['https://mail.google.com/']
     credenziali = None
-    tokenPath = "/home/batman/progetti/agenteV2/token.json"
+    tokenPath = Path(__file__).resolve().parent / "token.json"
     if os.path.exists(tokenPath):
         credenziali = Credentials.from_authorized_user_file(tokenPath, SCOPES)
     if not credenziali or not credenziali.valid:

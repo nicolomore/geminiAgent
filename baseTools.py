@@ -5,7 +5,7 @@ from readability import readability
 from serpapi import GoogleSearch
 from dotenv import load_dotenv
 from pathlib import Path
-from manager import *
+from utils import *
 import subprocess
 import py_compile
 import html2text
@@ -427,7 +427,7 @@ def restoreFile(filePath: str):
 def sendMail(destinationAddress: str, object : str, content: str, attachmentPath : str = None):
     """"sends an email to a destination address with content, an object and if you want an attachment"""
     SCOPES = ['https://mail.google.com/']
-    tokenPath = "/home/batman/progetti/agenteV2/token.json"
+    tokenPath = Path(__file__).resolve().parent / "token.json"
     credenziali = Credentials.from_authorized_user_file(tokenPath, SCOPES)
     service = build("gmail", "v1", credentials=credenziali)
     messaggio = EmailMessage()

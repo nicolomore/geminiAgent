@@ -3,7 +3,8 @@ from textual.containers import Horizontal, VerticalScroll
 from plugins.telegramPlugin import telegramPlugin
 from textual.app import App, ComposeResult
 from textual import on, work
-import manager
+from pathlib import Path
+import utils
 import agent
 
 class Bubble(Horizontal):
@@ -18,11 +19,11 @@ class Bubble(Horizontal):
         yield Markdown(markdown=self.text, classes="contenuto")
 
 class GUI(App):
-    CSS_PATH = "/home/batman/progetti/agenteV2/style.tcss"
+    CSS_PATH = Path(__file__).resolve().parent / "style.tcss"
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        manager.instance = self
+        utils.instance = self
 
     def _on_mount(self, event):
         self.query_one("#input", Input).focus()
@@ -74,7 +75,7 @@ class GUI(App):
         
 
 if __name__ == "__main__":
-    manager.initGmail()
+    utils.initGmail()
     agente = agent.Agent()
     agente.setSystemPrompt("""
         Sei un assistente AI avanzato e un agente di sistema locale. Interagisci con l'utente tramite un'interfaccia a riga di comando (TUI) avanzata.
@@ -85,7 +86,7 @@ if __name__ == "__main__":
         - Comportati come un sysadmin o un "copilota" per programmatori: sii conciso, tecnico, preciso e vai dritto al punto. Evita convenevoli inutili.
         - Se l'utente ti chiede di fare qualcosa sul sistema (es. "creami questo file", "cerca questo errore", "aggiorna la task"), USA I TOOL prima di rispondere e poi conferma all'utente l'esito dell'operazione, mostrando eventuali output rilevanti.
         """)
-    agente.addTools([telegramPlugin.sendFileTool])
+    agente.addTools([telegramPlugin.sendFileOnTelegramTool, telegramPlugin.sendMessageOnTelegramTool])
     agente.start()
     app = GUI()
     app.setAgent(agente)

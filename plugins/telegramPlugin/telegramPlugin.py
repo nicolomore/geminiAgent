@@ -4,25 +4,30 @@ from pathlib import Path
 import sys
 sys.path.append(str(Path(__file__).parent.parent.parent))
 import agent
-from manager import *
-import asyncio
+from utils import *
+import pathlib
 
 token = ""
 chatID = ""
-with open("/home/batman/progetti/agenteV2/plugins/telegramPlugin/telegramToken.txt", "r") as file:
+with open(Path(__file__).resolve().parent / "telegramToken.txt", "r") as file:
     token = file.read().strip()
-with open("/home/batman/progetti/agenteV2/plugins/telegramPlugin/telegramID.txt", "r") as file:
+with open(Path(__file__).resolve().parent / "telegramID.txt", "r") as file:
     chatID = int(file.read().strip())
 bot = Application.builder().token(token).build()
 
 @tool
-async def sendFileTool(path: str):
+async def sendFileOnTelegramTool(path: str):
     """you can use this function for sending files to the user with telegram"""
     with open(path, "rb") as file:
         await bot.bot.send_document(chat_id=chatID, document = file)
 
     return """inviato con successo"""
 
+@tool
+async def sendMessageOnTelegramTool(text: str):
+    """you can use this function for sending message to the user with telegram"""
+    await bot.bot.send_message(chat_id=chatID, text = text)
+    return """inviato con successo"""
     
 
 async def errorHandler(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -40,7 +45,7 @@ if __name__ == "__main__":
     bot.add_handler(MessageHandler(filters.TEXT, response))
     bot.add_error_handler(errorHandler)
     agente = agent.Agent()
-    agente.addTools([sendFileTool])
+    agente.addTools([sendFileOnTelegramTool])
     agente.setSystemPrompt("""
         Sei un assistente AI avanzato e un agente di sistema che comunica con l'utente tramite Telegram. Hai a disposizione numerosi strumenti per interagire con il sistema operativo, gestire file, testare codice Python, inviare email, cercare sul web e molto altro.
 

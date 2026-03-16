@@ -1,16 +1,8 @@
-from google import genai
-import os
 from dotenv import load_dotenv
 from google.genai import types
-import sys
+from google import genai
 from baseTools import *
-from rich.console import Console
-from rich.markdown import Markdown
-from rich.console import Group
-from rich.panel import Panel
-from rich.padding import Padding
-import questionary
-from prompt_toolkit.styles import Style
+import os
 
 class Agent:
     def __init__(self):
