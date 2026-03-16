@@ -16,7 +16,7 @@ class Agent:
                     findFolderOrFile, siteContent, analyzePythonProject,
                     manageTask, readTask, replaceInFile,
                     testPythonCode, checkPythonSyntax, backupFile,
-                    restoreFile, sendMail, testAsync]
+                    restoreFile, sendMail]
         self.config = types.GenerateContentConfig(temperature=0.7, tools=self.tools)
         self.chat = None
         self.history = []

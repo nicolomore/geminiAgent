@@ -4,8 +4,10 @@ from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
 from functools import wraps
 from pathlib import Path
+import importlib
 import inspect
 import os.path
+import agent
 
 instance = None
 
@@ -20,7 +22,7 @@ def tool(function):
                 return output
             except Exception as e:
                 return str(e)
-
+        asyncToolCall.isTool = True
         return asyncToolCall
     else:
         @wraps(function)
@@ -32,7 +34,7 @@ def tool(function):
                 return output
             except Exception as e:
                 return str(e)
-
+        syncToolCall.isTool = True
         return syncToolCall
 
 

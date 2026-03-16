@@ -445,8 +445,3 @@ def sendMail(destinationAddress: str, object : str, content: str, attachmentPath
     codificato = base64.urlsafe_b64encode(messaggio.as_bytes()).decode()
     createMessage = {"raw": codificato}
     send = (service.users().messages().send(userId= "me", body = createMessage).execute())
-
-@tool
-async def testAsync():
-    """it tests the async tools"""
-    return """success"""

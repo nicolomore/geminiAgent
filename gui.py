@@ -1,9 +1,9 @@
 from textual.widgets import Input, Button, Collapsible, Pretty, Markdown
 from textual.containers import Horizontal, VerticalScroll
-from plugins.telegramPlugin import telegramPlugin
 from textual.app import App, ComposeResult
 from textual import on, work
 from pathlib import Path
+import pluginManager
 import utils
 import agent
 
@@ -86,7 +86,8 @@ if __name__ == "__main__":
         - Comportati come un sysadmin o un "copilota" per programmatori: sii conciso, tecnico, preciso e vai dritto al punto. Evita convenevoli inutili.
         - Se l'utente ti chiede di fare qualcosa sul sistema (es. "creami questo file", "cerca questo errore", "aggiorna la task"), USA I TOOL prima di rispondere e poi conferma all'utente l'esito dell'operazione, mostrando eventuali output rilevanti.
         """)
-    agente.addTools([telegramPlugin.sendFileOnTelegramTool, telegramPlugin.sendMessageOnTelegramTool])
+    #agente.addTools([telegramPlugin.sendFileOnTelegramTool, telegramPlugin.sendMessageOnTelegramTool])
+    pluginManager.loadPlugins(agente)
     agente.start()
     app = GUI()
     app.setAgent(agente)

@@ -7,6 +7,7 @@ import agent
 from utils import *
 import pathlib
 
+
 token = ""
 chatID = ""
 with open(Path(__file__).resolve().parent / "telegramToken.txt", "r") as file:
