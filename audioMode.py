@@ -1,7 +1,7 @@
 from contextlib import contextmanager
 from dotenv import load_dotenv
 from google import genai
-from strumenti import *
+from baseTools import *
 import pyaudio
 import asyncio
 import sys
