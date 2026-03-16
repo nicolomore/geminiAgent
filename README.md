@@ -1,16 +1,16 @@
-# 🤖 AgenteV2: Your Ultimate System Co-Pilot
+# 🤖 geminiAgent: Your Ultimate System Co-Pilot
 
 [![Python Version](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
 [![Powered by Gemini](https://img.shields.io/badge/AI-Gemini%20Flash-orange.svg)](https://deepmind.google/technologies/gemini/)
 [![TUI](https://img.shields.io/badge/Interface-Textual%20TUI-green.svg)](https://textual.textualize.io/)
 
-> **AgenteV2** isn't just another chatbot. It’s an autonomous entity living in your terminal, capable of interacting directly with your Linux OS, analyzing code, managing your agenda, and even talking back to you in real-time.
+> **geminiAgent** isn't just another chatbot. It’s an autonomous entity living in your terminal, capable of interacting directly with your Linux OS, analyzing code, managing your agenda, and even talking back to you in real-time.
 
 ---
 
-## 🚀 Why AgenteV2?
+## 🚀 Why geminiAgent?
 
-Stop copying and pasting commands from a browser to your terminal. **AgenteV2** is an advanced AI agent that "thinks" and "executes." By bridging the gap between Google's Gemini API and deep system-level integration, it transforms your terminal into a proactive workspace.
+Stop copying and pasting commands from a browser to your terminal. **geminiAgent** is an advanced AI agent that "thinks" and "executes." By bridging the gap between Google's Gemini API and deep system-level integration, it transforms your terminal into a proactive workspace.
 
 ### ✨ Key Features
 
@@ -45,8 +45,8 @@ Stop copying and pasting commands from a browser to your terminal. **AgenteV2** 
 1. **Clone the repository:**
 
    ```bash
-   git clone https://github.com/your-username/agenteV2.git
-   cd agenteV2
+   git clone https://github.com/your-username/geminiAgent.git
+   cd geminiAgent
    ```
 
 2. **Install dependencies:**
@@ -89,7 +89,7 @@ python audioMode.py
 
 ## 🧩 Plugin Architecture
 
-AgenteV2 is modular by design. You can easily extend its capabilities by adding new tools to the `plugins/` directory. The agent automatically detects new tools and learns how to utilize them when relevant.
+geminiAgent is modular by design. You can easily extend its capabilities by adding new tools to the `plugins/` directory. The agent automatically detects new tools and learns how to utilize them when relevant.
 
 ---
 
